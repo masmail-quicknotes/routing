@@ -1,3 +1,3 @@
 # WLC commands
 
-> show run-config commands
+    show run-config commands
