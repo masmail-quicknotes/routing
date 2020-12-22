@@ -3,13 +3,15 @@
 
 # Ejercicio Core MPLS con GNS3
 
-## 1. Activando OSPF en el Core MPLS
 
 El objetivo del ejercicio es que el R4 y R6 se comuniquen entre ellos através de una conexión directa usando una red MPLS.
 
 ![Esquema Core MPLS ejercicio](./routing-gns3-mpls-ejercicio.png)
 
 El core lo componen los tres equipos R1, R2 y R3.
+
+## 1. Activando OSPF en el Core MPLS
+
 
 En la capa de abajo activaremos OSPF en el area backbone 0 para los equips R1, R2 y R3.
 
