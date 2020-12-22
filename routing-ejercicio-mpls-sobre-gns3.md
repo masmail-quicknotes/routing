@@ -119,6 +119,285 @@ Activando `mpls ldp autoconfig` en el proceso OSPF, activar el protocolo de dist
     router ospf 1
     mpls ldp autoconfig
 
+Verificamos que está funcionando LDP.
+
+    R2#show mpls interfaces 
+    Interface              IP            Tunnel   BGP Static Operational
+    GigabitEthernet0/1     Yes (ldp)     No       No  No     Yes        
+    GigabitEthernet0/2     Yes (ldp)     No       No  No     Yes       
+
+    R2#show mpls ldp neighbor 
+        Peer LDP Ident: 1.1.1.1:0; Local LDP Ident 2.2.2.2:0
+            TCP connection: 1.1.1.1.646 - 2.2.2.2.34514
+            State: Oper; Msgs sent/rcvd: 10/10; Downstream
+            Up time: 00:02:01
+            LDP discovery sources:
+              GigabitEthernet0/1, Src IP addr: 10.0.0.1
+            Addresses bound to peer LDP Ident:
+              10.0.0.1        1.1.1.1         
+        Peer LDP Ident: 3.3.3.3:0; Local LDP Ident 2.2.2.2:0
+            TCP connection: 3.3.3.3.16972 - 2.2.2.2.646
+            State: Oper; Msgs sent/rcvd: 10/10; Downstream
+            Up time: 00:01:57
+            LDP discovery sources:
+              GigabitEthernet0/2, Src IP addr: 10.0.1.3
+            Addresses bound to peer LDP Ident:
+              10.0.1.3        3.3.3.3      
+
+Y que desde R1 llegamos a la loopback de R3.
+
+    R1#trace 3.3.3.3
+    Type escape sequence to abort.
+    Tracing the route to 3.3.3.3
+    VRF info: (vrf in name/id, vrf out name/id)
+      1 10.0.0.2 [MPLS: Label 17 Exp 0] 3 msec 4 msec 2 msec
+      2 10.0.1.3 5 msec 3 msec 3 msec
+      
+## 3. Creamos una conexión MPLS BGP entre R1 y R3       
+
+Estableceremos una sesión Multi Protocol BGP entre R1 y R3 configurando `vpnv4  address family`.
+
+    R1#
+    router bgp 1
+     neighbor 3.3.3.3 remote-as 1
+     neighbor 3.3.3.3 update-source Loopback0
+     no auto-summary
+     !
+     address-family vpnv4
+      neighbor 3.3.3.3 activate
+
+    R3#
+    router bgp 1
+     neighbor 1.1.1.1 remote-as 1
+     neighbor 1.1.1.1 update-source Loopback0
+     no auto-summary
+     !
+     address-family vpnv4
+      neighbor 1.1.1.1 activate
+
+Verificaremos que R1 ve al vecino R3 de forma directa por BGP.
+
+R1#sh bgp vpnv4 unicast all summary
+BGP router identifier 1.1.1.1, local AS number 1
+BGP table version is 1, main routing table version 1
+
+Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+3.3.3.3         4            1       5       5        1    0    0 00:00:55        0
+
+## 4. Añadimos dos routers más en un VRF específico
+
+    R4 
+    hostname R4
+    int lo0
+    ip add 4.4.4.4 255.255.255.255 
+    ip ospf 2 area 2 
+    int gi0/3
+    ip add 192.168.1.4 255.255.255.0 
+    ip ospf 2 area 2
+    no shut 
+
+    R1 
+    int gi0/1 
+    no shut 
+    ip add 192.168.1.1 255.255.255.0   
+
+Creamos el VRF en R1 para la red 192.168.1.0/24.
+
+    R1 
+    ip vrf RED 
+    rd 4:4
+    route-target both 4:4
+
+    R1 
+    int gi0/1
+    ip vrf forwarding RED
+    ! Desconfigura la ip address
+
+    int gi0/1
+    ! La volvemos a poner
+    ip address 192.168.1.1 255.255.255.0
+
+Miramos la tabla de rutas, pero no vemos la red 192.168.1.0/24 ya que esta el VRF RED.
+
+    R1# show ip route
+
+    R1#show ip route vrf RED
+
+          192.168.1.0/24 is variably subnetted, 2 subnets, 2 masks
+    C        192.168.1.0/24 is directly connected, GigabitEthernet0/1
+    L        192.168.1.1/32 is directly connected, GigabitEthernet0/1
+
+Activamos en el R1 el area ospf 2.
+
+    R1
+    int gi0/1
+     ip ospf 2 area 2    
+
+Ahora ya vemos la loopback de R4 (4.4.4.4) en el R1.
+
+    R1#show ip route vrf RED
+
+          4.0.0.0/32 is subnetted, 1 subnets
+    O        4.4.4.4 [110/2] via 192.168.1.4, 00:00:28, GigabitEthernet0/1 <=======
+          192.168.1.0/24 is variably subnetted, 2 subnets, 2 masks
+    C        192.168.1.0/24 is directly connected, GigabitEthernet0/1
+    L        192.168.1.1/32 is directly connected, GigabitEthernet0/1
+
+Pasaremos a configurar el otro extremo, el R6.
+
+    R6    
+    hostname R6
+    int lo0
+    ip add 6.6.6.6 255.255.255.255 
+    ip ospf 2 area 2 
+    int Gi0/3
+    ip add 192.168.2.6 255.255.255.0 
+    ip ospf 2 area 2
+    no shut 
+
+Crearemos el VRF y el area OSPF 2 en el R3 donde conecta R6.
+
+    R3
+    int Gi0/1 
+    no shut 
+    ip add 192.168.2.3 255.255.255.0     
+
+    ip vrf RED
+    rd 4:4
+    route-target both 4:4
+
+    int Gi0/1
+    ip vrf forwarding RED
+    ip address 192.168.2.1 255.255.255.0
+    ip ospf 2 area 2
+
+En R3 vemos la red 6.6.6.6 en el VRF RED.
+
+    R3#sh ip route vrf RED
+
+          6.0.0.0/32 is subnetted, 1 subnets
+    O        6.6.6.6 [110/2] via 192.168.2.6, 00:00:01, GigabitEthernet0/1
+          192.168.2.0/24 is variably subnetted, 2 subnets, 2 masks
+    C        192.168.2.0/24 is directly connected, GigabitEthernet0/1
+    L        192.168.2.1/32 is directly connected, GigabitEthernet0/1
+
+Realizaremos alguna verificaciones.
+
+
+    R4#show ip route
+          4.0.0.0/32 is subnetted, 1 subnets
+    C        4.4.4.4 is directly connected, Loopback0
+          192.168.1.0/24 is variably subnetted, 2 subnets, 2 masks
+    C        192.168.1.0/24 is directly connected, GigabitEthernet0/3
+    L        192.168.1.4/32 is directly connected, GigabitEthernet0/3
+
+    R1#show ip route
+          1.0.0.0/32 is subnetted, 1 subnets
+    C        1.1.1.1 is directly connected, Loopback0
+          2.0.0.0/32 is subnetted, 1 subnets
+    O        2.2.2.2 [110/2] via 10.0.0.2, 00:32:28, GigabitEthernet0/3
+          3.0.0.0/32 is subnetted, 1 subnets
+    O        3.3.3.3 [110/3] via 10.0.0.2, 00:32:18, GigabitEthernet0/3
+          10.0.0.0/8 is variably subnetted, 3 subnets, 2 masks
+    C        10.0.0.0/24 is directly connected, GigabitEthernet0/3
+    L        10.0.0.1/32 is directly connected, GigabitEthernet0/3
+    O        10.0.1.0/24 [110/2] via 10.0.0.2, 00:32:18, GigabitEthernet0/3
+
+    R1#sh ip route vrf RED
+          4.0.0.0/32 is subnetted, 1 subnets
+    O        4.4.4.4 [110/2] via 192.168.1.4, 00:12:10, GigabitEthernet0/1
+          192.168.1.0/24 is variably subnetted, 2 subnets, 2 masks
+    C        192.168.1.0/24 is directly connected, GigabitEthernet0/1
+    L        192.168.1.1/32 is directly connected, GigabitEthernet0/1
+
+Ahora queremos que las redes 192.168.1.0/24 y 192.168.2.0/24 se vean entre ellas via core MPLS.
+
+## 5. Redistribucion OSPF en MP-BGP
+
+    R1
+    router bgp 1
+    address-family ipv4 vrf RED 
+    redistribute ospf 2
+
+    R3
+    router bgp 1
+    address-family ipv4 vrf RED 
+    redistribute ospf 2
+
+    R1#sh ip bgp vpnv4 vrf RED
+    BGP table version is 9, local router ID is 1.1.1.1
+    ...
+         Network          Next Hop            Metric LocPrf Weight Path
+    Route Distinguisher: 4:4 (default for vrf RED)
+     *>  4.4.4.4/32       192.168.1.4              2         32768 ?
+     *>i 6.6.6.6/32       3.3.3.3                  2    100      0 ?
+     *>  192.168.1.0      0.0.0.0                  0         32768 ?
+     *>i 192.168.2.0      3.3.3.3                  0    100      0 ?
+ 
+    R3#sh ip bgp vpnv4 vrf RED
+    BGP table version is 9, local router ID is 3.3.3.3
+    ...
+         Network          Next Hop            Metric LocPrf Weight Path
+    Route Distinguisher: 4:4 (default for vrf RED)
+     *>i 4.4.4.4/32       1.1.1.1                  2    100      0 ?
+     *>  6.6.6.6/32       192.168.2.6              2         32768 ?
+     *>i 192.168.1.0      1.1.1.1                  0    100      0 ?
+     *>  192.168.2.0      0.0.0.0                  0         32768 ?
+
+El paso final es el tráfico de vuelta, con lo que distribuimos BGP en OSPF.
+
+    R1
+    router ospf 2 
+    redistribute bgp 1 subnets 
+
+    R3 
+    router ospf 2 
+    redistribute bgp 1 subnets
+
+Ahora R4 ve a R6, tanto la loopback de R6 como la red 192.168.2.0/24.
+
+    R4#show ip route
+          4.0.0.0/32 is subnetted, 1 subnets
+    C        4.4.4.4 is directly connected, Loopback0
+          6.0.0.0/32 is subnetted, 1 subnets
+    O IA     6.6.6.6 [110/3] via 192.168.1.1, 00:00:28, GigabitEthernet0/3 <=======
+          192.168.1.0/24 is variably subnetted, 2 subnets, 2 masks
+    C        192.168.1.0/24 is directly connected, GigabitEthernet0/3
+    L        192.168.1.4/32 is directly connected, GigabitEthernet0/3
+    O IA  192.168.2.0/24 [110/2] via 192.168.1.1, 00:00:28, GigabitEthernet0/3 <=======
+
+Y R6 ve a R4.
+
+    R6#show ip route
+          4.0.0.0/32 is subnetted, 1 subnets
+    O IA     4.4.4.4 [110/3] via 192.168.2.1, 00:01:19, GigabitEthernet0/3  <=======
+          6.0.0.0/32 is subnetted, 1 subnets
+    C        6.6.6.6 is directly connected, Loopback0
+    O IA  192.168.1.0/24 [110/2] via 192.168.2.1, 00:01:19, GigabitEthernet0/3 <=======
+          192.168.2.0/24 is variably subnetted, 2 subnets, 2 masks
+    C        192.168.2.0/24 is directly connected, GigabitEthernet0/3
+    L        192.168.2.6/32 is directly connected, GigabitEthernet0/3
+
+Con lo que el ping de R4 a R6 funcionará, y pasará de forma directa através de MPLS.
+
+    R4#ping 6.6.6.6
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 6.6.6.6, timeout is 2 seconds:
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 2/3/8 ms
+
+    R4#trace 6.6.6.6
+    Type escape sequence to abort.
+    Tracing the route to 6.6.6.6
+    VRF info: (vrf in name/id, vrf out name/id)
+      1 192.168.1.1 4 msec 4 msec 3 msec
+      2 10.0.0.2 [MPLS: Labels 17/19 Exp 0] 8 msec 5 msec 3 msec
+      3 192.168.2.1 [MPLS: Label 19 Exp 0] 3 msec 2 msec 2 msec
+      4 192.168.2.6 2 msec 2 msec 2 msec
+
+El proyecto GNS3 del ejercicio queda de la siguiente forma en la GUI de GNS3.
+
+
 
 ***
 
