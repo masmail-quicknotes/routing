@@ -5,7 +5,9 @@
 
 - [Autonomous Systems BGP](#autonomous-systems-bgp)
 
-- [Ejercicio MPLS sobre GNS3](./routing-ejercicio-mpls-sobre-gns3.md)
+- [Simulador de red GNS3](./routing-instalacion-gns3.md)    
+ - [Instalación de GNS3 en Ubuntu 20.04 LTS](./routing-instalacion-gns3.md)       
+ - [Ejercicio Core MPLS sobre GNS3](./routing-ejercicio-mpls-sobre-gns3.md)        
 
 - [Otros tips](#otros-tips)
 
