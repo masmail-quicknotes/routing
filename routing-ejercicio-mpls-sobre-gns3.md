@@ -1,11 +1,6 @@
 
 # Ejercicio Core MPLS con GNS3
 
-- [Instalación GNS3 sobre Ubuntu 20.04 LTS](#instalación-gns3-sobre-ubuntu-20.04-lts)
-2
-- [Ejercicio Core MPLS con GNS3](#ejercicio-core-mpls-con-gns3)
-3
-
 El objetivo del ejercicio es que el R4 y R6 se comuniquen entre ellos através de una conexión directa usando una red MPLS.
 
 ![Esquema Core MPLS ejercicio](./routing-gns3-mpls-ejercicio.png)
