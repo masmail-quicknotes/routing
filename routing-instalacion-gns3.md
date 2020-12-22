@@ -41,3 +41,9 @@ Podemos añadir por ejemplo el firmware de un Cisco que tengamos de la siguiente
     File / Import appliance
       cisco-iosv.gns3a   <-- Cisco Virtual IOS allows user to run IOS on a standard computer.
     Server type: [X] Install the appliance on your local computer
+
+
+
+# URLs referencia:
+- https://docs.gns3.com/docs/getting-started/installation/linux
+
