@@ -11,21 +11,21 @@
 
 # Distancia Administrativa Routing
 
-        **Protocolo**	        **Distancia administrativa**
+        Protocolo	              Distancia administrativa
         Directamente conectados	0
-        Ruta estática	        1
+        Ruta estática	       1
         Ruta EIGRP sumarizada	5
-        BGP externa	            20
-        EIGRP interna	        90
-        IGRP	                100
-        OSPF	                110
-        IS-IS	                115
-        RIP	                    120
-        EGP	                    140
-        ODR	                    160
-        EIGRP externa	        170
-        BGP interna	            200
-        Desconocida	            255
+        BGP externa	              20
+        EIGRP interna	       90
+        IGRP	                     100
+        OSPF	                     110
+        IS-IS	                     115
+        RIP	                     120
+        EGP	                     140
+        ODR	                     160
+        EIGRP externa	       170
+        BGP interna	              200
+        Desconocida	              255
 
 # Autonomous Systems BGP
 
