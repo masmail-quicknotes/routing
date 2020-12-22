@@ -11,7 +11,7 @@
  
   - [Ejercicio Core MPLS sobre GNS3](./routing-ejercicio-mpls-sobre-gns3.md)        
 
-- [Otros tips](#otros-tips)
+***
 
 # Distancia Administrativa Routing
 
@@ -77,12 +77,8 @@ Y con el siguiente cambio aplicaremos el cambio:
     # sysctl -p
 
 
-# Otros tips
+***
 
-## WLC commands
-
-    show run-config commands
-    
 # URLs referencia:
 - https://www.cyberciti.biz/tips/linux-how-to-setup-multi-homing-networking.html
 - https://en.wikipedia.org/wiki/Autonomous_system_(Internet)
