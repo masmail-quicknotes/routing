@@ -14,7 +14,7 @@
 
 ## Iniciamos gns3 Server
 
-    gns3server &
+    gns3server --local &
 
 ## Iniciamos gns3 GUI
 
