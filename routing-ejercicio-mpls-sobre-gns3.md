@@ -1,8 +1,9 @@
 # Indice
 
 - [Ejercicio Core MPLS con GNS3](#ejercicio-core-mpls-con-gns3)
-- [Problemas](#problemas)
-- [Ficheros configuración](#ficheros-configuración)
+    - [Problemas](#problemas)
+    - [Ficheros configuración](#ficheros-configuración)
+- [Mejora arquitectura](#mejora-arquitectura)   
 - [URLs referencia](#urls-referencia)
 
 ***
@@ -440,6 +441,35 @@ El proyecto GNS3 del ejercicio queda de la siguiente forma en la GUI de GNS3.
 - [R3](./routing-ejercicio-mpls-sobre-gns3-r3.conf)
 - [R4](./routing-ejercicio-mpls-sobre-gns3-r4.conf)
 - [R6](./routing-ejercicio-mpls-sobre-gns3-r6.conf)
+
+***
+
+# Mejora arquitectura
+
+Una ampliación del ejercicio, puede ser añadir un PC en cada red de cliente (CE) con un switch. Y también añadir un bastion host con una red especial para la gestión.
+
+Ejemplo configuracion VRF gestión:
+
+    ip vrf MGMT
+     rd 10.125.100.0:0
+
+    interface GigabitEthernet0/2
+     description MGMT
+     ip vrf forwarding MGMT
+     ip address 10.125.100.1X 255.255.255.0
+     no shutdown
+
+Si todo esta bien configurado podremos hacer ping al Bastion Host desde los routers.
+ 
+    RX#ping vrf MGMT ip 10.125.100.100
+    Type escape sequence to abort.
+    Sending 5, 100-byte ICMP Echos to 10.125.100.100, timeout is 2 seconds:
+    !!!!!
+    Success rate is 100 percent (5/5), round-trip min/avg/max = 1/1/1 ms
+
+Esquema del ejercicio:
+
+- ![Esquema Core MPLS ejercicio 2](./routing-gns3-mpls-ejercicio2.png)
 
 
 ***
