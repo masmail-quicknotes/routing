@@ -1,4 +1,12 @@
 
+# Índice
+
+- [Instalación GNS3 sobre Ubuntu 20.04 LTS](#instalación-GNS3-sobre-ubuntu-20.04-LTS)
+
+- [URLs referencia](#urls-referencia)
+
+***
+
 # Instalación GNS3 sobre Ubuntu 20.04 LTS
 
     sudo add-apt-repository ppa:gns3/ppa
