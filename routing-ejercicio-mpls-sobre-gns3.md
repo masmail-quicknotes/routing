@@ -423,7 +423,7 @@ El proyecto GNS3 del ejercicio queda de la siguiente forma en la GUI de GNS3.
 
         R3(config)#interface GigabitEthernet0/1         
         R3(config-if)#ip ospf 2 area 2
-        \%VRF specified does not match existing router
+        %VRF specified does not match existing router
 
         R3(config)#no router ospf 2
         R3(config)#interface GigabitEthernet0/1
