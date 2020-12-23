@@ -50,18 +50,18 @@ Desde el 2007 los ASN son de 32-bits.
 
 | Number | Bits | Description	|
 |--------|------|-------------|
-| 0	                      16	    | Reserved for RPKI unallocated space invalidation[11] |
-| 1 - 23455	|              16	    | Public ASNs. |
-| 23456	   |               16	    | Reserved for AS Pool Transition. |
-| 23457 - 64495 |	          16	  |  Public ASNs. |
-| 64496 - 64511	|          16	   | Reserved for use in documentation/sample code. |
-| 64512 - 65534	|          16	   | Reserved for private use. |
-| 65535	        |          16	   | Reserved. |
-| 65536 - 65551	 |         32	   | Reserved for use in documentation and sample code. |
-| 65552 - 131071	|        32	   | Reserved. |
-| 131072 - 4199999999 |    32	   | Public 32-bit ASNs. |
-| 4200000000 - 4294967294	| 32	 |   Reserved for private use. |
-| 4294967295	            | 32	|    Reserved. |
+| 0 | 16 | Reserved for RPKI unallocated space invalidation[11] |
+| 1 - 23455	| 16 | Public ASNs. |
+| 23456 | 16 | Reserved for AS Pool Transition. |
+| 23457 - 64495 | 16 |  Public ASNs. |
+| 64496 - 64511	| 16 | Reserved for use in documentation/sample code. |
+| 64512 - 65534	| 16 | Reserved for private use. |
+| 65535 | 16 | Reserved. |
+| 65536 - 65551 | 32 | Reserved for use in documentation and sample code. |
+| 65552 - 131071 | 32 | Reserved. |
+| 131072 - 4199999999 | 32 | Public 32-bit ASNs. |
+| 4200000000 - 4294967294 | 32 |   Reserved for private use. |
+| 4294967295 | 32 |    Reserved. |
 
 
 
