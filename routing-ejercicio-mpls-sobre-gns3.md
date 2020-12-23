@@ -439,7 +439,7 @@ El proyecto GNS3 del ejercicio queda de la siguiente forma en la GUI de GNS3.
 - [R2](./routing-ejercicio-mpls-sobre-gns3-r2.conf)
 - [R3](./routing-ejercicio-mpls-sobre-gns3-r3.conf)
 - [R4](./routing-ejercicio-mpls-sobre-gns3-r4.conf)
-- [R6](./routing-ejercicio-mpls-sobre-gns3-r5.conf)
+- [R6](./routing-ejercicio-mpls-sobre-gns3-r6.conf)
 
 
 ***
