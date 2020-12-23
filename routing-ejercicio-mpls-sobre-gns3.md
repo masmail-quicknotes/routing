@@ -1,3 +1,10 @@
+# Indice
+
+- [Ejercicio Core MPLS con GNS3](#ejericio-core-mpls-con-gns3)
+- [Problemas](#problemas)
+- [URLs referencia](#urls-referencia)
+
+***
 
 # Ejercicio Core MPLS con GNS3
 
@@ -14,6 +21,7 @@ En la capa de abajo activaremos OSPF en el area backbone 0 para los equips R1, R
 
     R1
     ====
+    conf t
     hostname R1
     int lo0 
     ip add 1.1.1.1 255.255.255.255
@@ -23,10 +31,11 @@ En la capa de abajo activaremos OSPF en el area backbone 0 para los equips R1, R
     ip add 10.0.0.1 255.255.255.0
     no shut
     ip ospf 1 area 0  
+    end
 
     R2
     ====
-
+    conf t
     hostname R2
     int lo0
     ip add 2.2.2.2 255.255.255.255
@@ -41,9 +50,11 @@ En la capa de abajo activaremos OSPF en el area backbone 0 para los equips R1, R
     ip add 10.0.1.2 255.255.255.0 
     no shut 
     ip ospf 1 area 0 
+    end
 
     R3
     ====
+    conf t
     hostname R3
     int lo0 
     ip add 3.3.3.3 255.255.255.255
@@ -53,6 +64,7 @@ En la capa de abajo activaremos OSPF en el area backbone 0 para los equips R1, R
     ip add 10.0.1.3 255.255.255.0 
     no shut 
     ip ospf 1 area 0 
+    end
 
 Verificaremos que desde R1 llegamos a la loopback de R3.
 
@@ -63,16 +75,24 @@ Verificaremos que desde R1 llegamos a la loopback de R3.
 Activando `mpls ldp autoconfig` en el proceso OSPF, activar el protocolo de distibución de etiquetas ( `LDP`, `Label Distribution Protocol` ) de mpls en cada interface que tenga ospf activado en el este proceso específico.
 
     R1
+    conf t
     router ospf 1
     mpls ldp autoconfig
+    end
 
     R2
+    ====
+    conf t
     router ospf 1
     mpls ldp autoconfig
+    end
 
     R3
+    ====
+    conf t
     router ospf 1
     mpls ldp autoconfig
+    end
 
 Verificamos que está funcionando LDP.
 
@@ -112,7 +132,9 @@ Y que desde R1 llegamos a la loopback de R3.
 
 Estableceremos una sesión Multi Protocol BGP entre R1 y R3 configurando `vpnv4  address family`.
 
-    R1#
+    R1
+    ====
+    conf t    
     router bgp 1
      neighbor 3.3.3.3 remote-as 1
      neighbor 3.3.3.3 update-source Loopback0
@@ -120,8 +142,11 @@ Estableceremos una sesión Multi Protocol BGP entre R1 y R3 configurando `vpnv4 
      !
      address-family vpnv4
       neighbor 3.3.3.3 activate
+    end
 
-    R3#
+    R3
+    ====
+    conf t
     router bgp 1
      neighbor 1.1.1.1 remote-as 1
      neighbor 1.1.1.1 update-source Loopback0
@@ -129,6 +154,7 @@ Estableceremos una sesión Multi Protocol BGP entre R1 y R3 configurando `vpnv4 
      !
      address-family vpnv4
       neighbor 1.1.1.1 activate
+    end
 
 Verificaremos que R1 ve al vecino R3 de forma directa por BGP.
 
@@ -142,6 +168,8 @@ Verificaremos que R1 ve al vecino R3 de forma directa por BGP.
 ## 4. Añadimos dos routers más en un VRF específico
 
     R4 
+    ====
+    conf t
     hostname R4
     int lo0
     ip add 4.4.4.4 255.255.255.255 
@@ -150,20 +178,29 @@ Verificaremos que R1 ve al vecino R3 de forma directa por BGP.
     ip add 192.168.1.4 255.255.255.0 
     ip ospf 2 area 2
     no shut 
+    end
 
     R1 
+    ====
+    conf t
     int gi0/1 
     no shut 
     ip add 192.168.1.1 255.255.255.0   
+    end
 
 Creamos el VRF en R1 para la red 192.168.1.0/24.
 
     R1 
+    ====
+    conf t
     ip vrf RED 
     rd 4:4
     route-target both 4:4
+    end
 
     R1 
+    ====
+    conf t
     int gi0/1
     ip vrf forwarding RED
     ! Desconfigura la ip address
@@ -171,10 +208,12 @@ Creamos el VRF en R1 para la red 192.168.1.0/24.
     int gi0/1
     ! La volvemos a poner
     ip address 192.168.1.1 255.255.255.0
+    end
 
 Miramos la tabla de rutas, pero no vemos la red 192.168.1.0/24 ya que esta el VRF RED.
 
     R1# show ip route
+    ...
 
     R1#show ip route vrf RED
 
@@ -185,8 +224,11 @@ Miramos la tabla de rutas, pero no vemos la red 192.168.1.0/24 ya que esta el VR
 Activamos en el R1 el area ospf 2.
 
     R1
+    ====
+    conf t
     int gi0/1
      ip ospf 2 area 2    
+    end
 
 Ahora ya vemos la loopback de R4 (4.4.4.4) en el R1.
 
@@ -201,6 +243,8 @@ Ahora ya vemos la loopback de R4 (4.4.4.4) en el R1.
 Pasaremos a configurar el otro extremo, el R6.
 
     R6    
+    ====
+    conf t
     hostname R6
     int lo0
     ip add 6.6.6.6 255.255.255.255 
@@ -209,13 +253,16 @@ Pasaremos a configurar el otro extremo, el R6.
     ip add 192.168.2.6 255.255.255.0 
     ip ospf 2 area 2
     no shut 
-
+    end
+    
 Crearemos el VRF y el area OSPF 2 en el R3 donde conecta R6.
 
     R3
+    ====
+    conf t  
     int Gi0/1 
     no shut 
-    ip add 192.168.2.3 255.255.255.0     
+    ip add 192.168.2.1 255.255.255.0     
 
     ip vrf RED
     rd 4:4
@@ -225,6 +272,7 @@ Crearemos el VRF y el area OSPF 2 en el R3 donde conecta R6.
     ip vrf forwarding RED
     ip address 192.168.2.1 255.255.255.0
     ip ospf 2 area 2
+    end
 
 En R3 vemos la red 6.6.6.6 en el VRF RED.
 
@@ -270,14 +318,20 @@ Ahora queremos que las redes 192.168.1.0/24 y 192.168.2.0/24 se vean entre ellas
 ## 5. Redistribucion OSPF en MP-BGP
 
     R1
+    ====
+    conf t
     router bgp 1
     address-family ipv4 vrf RED 
     redistribute ospf 2
+    end
 
     R3
+    ====
+    conf t
     router bgp 1
     address-family ipv4 vrf RED 
     redistribute ospf 2
+    end
 
     R1#sh ip bgp vpnv4 vrf RED
     BGP table version is 9, local router ID is 1.1.1.1
@@ -302,12 +356,18 @@ Ahora queremos que las redes 192.168.1.0/24 y 192.168.2.0/24 se vean entre ellas
 El paso final es el tráfico de vuelta, con lo que distribuimos BGP en OSPF.
 
     R1
+    ====
+    conf t
     router ospf 2 
     redistribute bgp 1 subnets 
+    end
 
     R3 
+    ====
+    conf t
     router ospf 2 
     redistribute bgp 1 subnets
+    end
 
 Ahora R4 ve a R6, tanto la loopback de R6 como la red 192.168.2.0/24.
 
@@ -354,8 +414,26 @@ El proyecto GNS3 del ejercicio queda de la siguiente forma en la GUI de GNS3.
 
 ![GNS GUI Core MPLS ejercicio](./routing-gns3-mpls-gui-final.png)
 
+***
+
+# Problemas
+
+- Q: **Error de VRF al aplicar una ospf en una interface con VRF "%VRF specified does not match existing router"**
+- A: Borra el router ospf, aplica ospf en el interface y vuelve a crear el router ospf.
+
+    R3(config)#interface GigabitEthernet0/1         
+    R3(config-if)#ip ospf 2 area 2
+    %VRF specified does not match existing router
+
+
+    R3(config)#no router ospf 2
+    R3(config)#interface GigabitEthernet0/1
+    R3(config-if)#ip ospf 2 area 2            
+    R3(config-if)#router ospf 2
+    R3(config-router)# redistribute bgp 1 subnets
+
 
 ***
 
-# URLs referencia:
+# URLs referencia
 - https://www.rogerperkin.co.uk/ccie/mpls/cisco-mpls-tutorial/
