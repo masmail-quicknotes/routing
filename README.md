@@ -15,25 +15,25 @@
 
 # Distancia Administrativa Routing
 
-        Protocolo	              Distancia administrativa
-        Directamente conectados	0
-        Ruta estática	       1
-        Ruta EIGRP sumarizada	5
-        BGP externa	              20
-        EIGRP interna	       90
-        IGRP	                     100
-        OSPF	                     110
-        IS-IS	                     115
-        RIP	                     120
-        EGP	                     140
-        ODR	                     160
-        EIGRP externa	       170
-        BGP interna	              200
-        Desconocida	              255
+        Protocolo	                  Distancia administrativa
+        Directamente conectados	    0
+        Ruta estática	              1
+        Ruta EIGRP sumarizada	      5
+        BGP externa	                20
+        EIGRP interna	              90
+        IGRP	                      100
+        OSPF	                      110
+        IS-IS	                      115
+        RIP	                        120
+        EGP	                        140
+        ODR	                        160
+        EIGRP externa	              170
+        BGP interna	                200
+        Desconocida	                255
 
 # Autonomous Systems BGP
 
-Hasta el 2007, los números AS estaban definidos como un entero de 16-bits, lo que permitia un número máximo de 65.536.
+Hasta el 2007, los números AS estaban definidos como un entero de 16-bits, lo que permite un número máximo de 65.536.
 
 IANA controla los números AS. Y estos son asignados de la siguiente forma:
 
@@ -46,14 +46,14 @@ IANA controla los números AS. Y estos son asignados de la siguiente forma:
 Desde el 2007 los ASN son de 32-bits.
 
     Number	                Bits	Description	
-    0	                    16	    Reserved for RPKI unallocated space invalidation[11]
-    1 - 23455	            16	    Public ASNs	
-    23456	                16	    Reserved for AS Pool Transition	
-    23457 - 64495	        16	    Public ASNs	
-    64496 - 64511	        16	    Reserved for use in documentation/sample code	
-    64512 - 65534	        16	    Reserved for private use	
-    65535	                16	    Reserved	
-    65536 - 65551	        32	    Reserved for use in documentation and sample code	
+    0	                      16	    Reserved for RPKI unallocated space invalidation[11]
+    1 - 23455	              16	    Public ASNs	
+    23456	                  16	    Reserved for AS Pool Transition	
+    23457 - 64495	          16	    Public ASNs	
+    64496 - 64511	          16	    Reserved for use in documentation/sample code	
+    64512 - 65534	          16	    Reserved for private use	
+    65535	                  16	    Reserved	
+    65536 - 65551	          32	    Reserved for use in documentation and sample code	
     65552 - 131071	        32	    Reserved	
     131072 - 4199999999     32	    Public 32-bit ASNs	
     4200000000 - 4294967294	32	    Reserved for private use	
