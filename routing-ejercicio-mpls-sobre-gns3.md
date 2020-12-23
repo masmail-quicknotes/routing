@@ -454,7 +454,7 @@ Ejemplo configuracion VRF gestión en cada router.
     ip vrf MGMT
      rd 10.125.100.0:0
 
-    interface GigabitEthernet0/2
+    interface GigabitEthernet0/Y
      description MGMT
      ip vrf forwarding MGMT
      ip address 10.125.100.1X 255.255.255.0
@@ -471,8 +471,7 @@ Si todo esta bien configurado podremos hacer ping al Bastion Host desde los rout
 
 Esquema del ejercicio:
 
-- ![Esquema Core MPLS ejercicio 2](./routing-gns3-mpls-ejercicio2.png)
-
+![Esquema Core MPLS ejercicio 2](./routing-gns3-mpls-ejercicio2.png)
 
 ***
 
