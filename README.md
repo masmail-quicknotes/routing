@@ -1,3 +1,4 @@
+# Índice
 
 - [Distancias Administrativa Routing](#distancia-administrativa-routing)
 
@@ -9,7 +10,9 @@
 
   - [Instalación de GNS3 en Ubuntu 20.04 LTS](./routing-instalacion-gns3.md)       
  
-  - [Ejercicio Core MPLS sobre GNS3](./routing-ejercicio-mpls-sobre-gns3.md)        
+  - [Ejercicio Core MPLS sobre GNS3](./routing-ejercicio-mpls-sobre-gns3.md)      
+
+- [URLs referencia](#urls-referencia)
 
 ***
 
@@ -83,7 +86,7 @@ Y con el siguiente cambio aplicaremos el cambio:
 
 ***
 
-# URLs referencia:
+# URLs referencia
 - https://www.cyberciti.biz/tips/linux-how-to-setup-multi-homing-networking.html
 - https://en.wikipedia.org/wiki/Autonomous_system_(Internet)
 - https://www.geeksforgeeks.org/difference-between-ebgp-and-ibgp/
