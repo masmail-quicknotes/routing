@@ -1,9 +1,13 @@
-# Indice
+# Índice
 
 - [Ejercicio Core MPLS con GNS3](#ejercicio-core-mpls-con-gns3)
+
     - [Problemas](#problemas)
+    
     - [Ficheros configuración](#ficheros-configuración)
+    
 - [Ejercicio mejora](#ejercicio-mejora)   
+
 - [URLs referencia](#urls-referencia)
 
 ***
