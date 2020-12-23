@@ -1,7 +1,7 @@
 
 # Índice
 
-- [Instalación GNS3 sobre Ubuntu 20.04 LTS](#instalación-GNS3-sobre-ubuntu-20.04-LTS)
+- [Instalación GNS3 sobre Ubuntu 20.04 LTS](#instalación-GNS3-sobre-ubuntu-2004-LTS)
 
 - [URLs referencia](#urls-referencia)
 
