@@ -132,12 +132,12 @@ Estableceremos una sesión Multi Protocol BGP entre R1 y R3 configurando `vpnv4 
 
 Verificaremos que R1 ve al vecino R3 de forma directa por BGP.
 
-R1#sh bgp vpnv4 unicast all summary
-BGP router identifier 1.1.1.1, local AS number 1
-BGP table version is 1, main routing table version 1
+    R1#sh bgp vpnv4 unicast all summary
+    BGP router identifier 1.1.1.1, local AS number 1
+    BGP table version is 1, main routing table version 1
 
-Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
-3.3.3.3         4            1       5       5        1    0    0 00:00:55        0
+    Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+    3.3.3.3         4            1       5       5        1    0    0 00:00:55        0
 
 ## 4. Añadimos dos routers más en un VRF específico
 
