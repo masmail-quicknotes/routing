@@ -2,6 +2,7 @@
 
 - [Ejercicio Core MPLS con GNS3](#ejercicio-core-mpls-con-gns3)
 - [Problemas](#problemas)
+- [Ficheros configuración](#ficheros-configuración)
 - [URLs referencia](#urls-referencia)
 
 ***
@@ -430,6 +431,15 @@ El proyecto GNS3 del ejercicio queda de la siguiente forma en la GUI de GNS3.
         R3(config-if)#ip ospf 2 area 2            
         R3(config-if)#router ospf 2
         R3(config-router)# redistribute bgp 1 subnets
+***
+
+# Ficheros configuración
+
+- [R1](./routing-ejercicio-mpls-sobre-gns3-r1.conf)
+- [R2](./routing-ejercicio-mpls-sobre-gns3-r2.conf)
+- [R3](./routing-ejercicio-mpls-sobre-gns3-r3.conf)
+- [R4](./routing-ejercicio-mpls-sobre-gns3-r4.conf)
+- [R6](./routing-ejercicio-mpls-sobre-gns3-r5.conf)
 
 
 ***
