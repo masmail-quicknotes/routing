@@ -3,7 +3,7 @@
 - [Ejercicio Core MPLS con GNS3](#ejercicio-core-mpls-con-gns3)
     - [Problemas](#problemas)
     - [Ficheros configuración](#ficheros-configuración)
-- [Mejora arquitectura](#mejora-arquitectura)   
+- [Ejercicio mejora](#ejercicio-mejora)   
 - [URLs referencia](#urls-referencia)
 
 ***
@@ -267,7 +267,7 @@ Crearemos el VRF y el area OSPF 2 en el R3 donde conecta R6.
     ip add 192.168.2.1 255.255.255.0     
 
     ip vrf RED
-    rd 4:4
+    rd 4:4arquitectura
     route-target both 4:4
 
     int Gi0/1
@@ -444,12 +444,13 @@ El proyecto GNS3 del ejercicio queda de la siguiente forma en la GUI de GNS3.
 
 ***
 
-# Mejora arquitectura
+# Ejercicio mejora 
 
-Una ampliación del ejercicio, puede ser añadir un PC en cada red de cliente (CE) con un switch. Y también añadir un bastion host con una red especial para la gestión.
+Una ampliación del ejercicio, puede ser añadir un PC en cada red de cliente (CE) con un switch. Y también añadir un bastion Host con una red especial para la gestión.
 
-Ejemplo configuracion VRF gestión:
+Ejemplo configuracion VRF gestión en cada router.
 
+    conf t
     ip vrf MGMT
      rd 10.125.100.0:0
 
@@ -458,6 +459,7 @@ Ejemplo configuracion VRF gestión:
      ip vrf forwarding MGMT
      ip address 10.125.100.1X 255.255.255.0
      no shutdown
+    end
 
 Si todo esta bien configurado podremos hacer ping al Bastion Host desde los routers.
  
