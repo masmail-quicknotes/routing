@@ -1,6 +1,6 @@
 # Indice
 
-- [Ejercicio Core MPLS con GNS3](#ejericio-core-mpls-con-gns3)
+- [Ejercicio Core MPLS con GNS3](#ejercicio-core-mpls-con-gns3)
 - [Problemas](#problemas)
 - [URLs referencia](#urls-referencia)
 
@@ -421,16 +421,15 @@ El proyecto GNS3 del ejercicio queda de la siguiente forma en la GUI de GNS3.
 - Q: **Error de VRF al aplicar una ospf en una interface con VRF "%VRF specified does not match existing router"**
 - A: Borra el router ospf, aplica ospf en el interface y vuelve a crear el router ospf.
 
-    R3(config)#interface GigabitEthernet0/1         
-    R3(config-if)#ip ospf 2 area 2
-    %VRF specified does not match existing router
+        R3(config)#interface GigabitEthernet0/1         
+        R3(config-if)#ip ospf 2 area 2
+        \%VRF specified does not match existing router
 
-
-    R3(config)#no router ospf 2
-    R3(config)#interface GigabitEthernet0/1
-    R3(config-if)#ip ospf 2 area 2            
-    R3(config-if)#router ospf 2
-    R3(config-router)# redistribute bgp 1 subnets
+        R3(config)#no router ospf 2
+        R3(config)#interface GigabitEthernet0/1
+        R3(config-if)#ip ospf 2 area 2            
+        R3(config-if)#router ospf 2
+        R3(config-router)# redistribute bgp 1 subnets
 
 
 ***
